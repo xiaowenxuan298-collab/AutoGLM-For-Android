@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicReference
  * Configuration for the PhoneAgent.
  */
 data class AgentConfig(
-    val maxSteps: Int = 100,
+    val maxSteps: Int = 65535,
     val language: String = "cn",
     val verbose: Boolean = true,
     val screenshotDelayMs: Long = 2000L
