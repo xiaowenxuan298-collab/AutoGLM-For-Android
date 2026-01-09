@@ -429,7 +429,8 @@ class PhoneAgent(
         actionExecuted.set(false)
 
         currentStepNumber++
-        Logger.d(TAG, "当前${currentStepNumber}步骤，任务是${task}，步骤提示是${hint}")
+        val actualTask = task ?: "continue"
+        Logger.d(TAG, "当前${currentStepNumber}步骤，任务是${actualTask}，步骤提示是${hint}")
         Logger.logStep(currentStepNumber, task ?: "continue")
         listener?.onStepStarted(currentStepNumber)
 
@@ -529,7 +530,7 @@ class PhoneAgent(
 
             // Build user message
             val userText = when {
-                task != null -> "任务: $task\n当前屏幕截图如下:"
+                actualTask != null -> "任务: $actualTask\n当前屏幕截图如下:"
                 hint != null -> "上一步执行结果: $hint\n继续执行任务，当前屏幕截图如下:"
                 else -> "继续执行任务，当前屏幕截图如下:"
             }
@@ -542,7 +543,7 @@ class PhoneAgent(
 
             val modelResult = modelClient.request(ctx.getMessages())
 
-            Logger.d(TAG, "向模型发送的请求用户文本为：${userText}，整体ctx内容为${ctx}")
+            Logger.d(TAG, "向模型发送的请求用户文本为：${userText}")
 
             // Check if cancelled after request (request might have been interrupted)
             if (cancelled.get()) {
